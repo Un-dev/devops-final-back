@@ -11,8 +11,8 @@ jobs:
       - run: 
           name: set env vars
           command: | 
-            export CONDUIT_SECRET='something-really-secret'
-            export FLASK_APP=/path/to/autoapp.py
+            export CONDUIT_SECRET='something-secret'
+            export FLASK_APP=./autoapp.py
             export FLASK_DEBUG=1
             pip install -r requirements/dev.txt --user
       - save_cache:
