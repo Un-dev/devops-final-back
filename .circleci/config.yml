@@ -17,7 +17,6 @@ jobs:
       - run : 
           name: install deps
           command: |
-            pip install
             /usr/local/bin/python -m pip install --upgrade pip
             apk update && apk add postgresql-dev gcc python3-dev musl-dev
             pip install -r requirements/dev.txt --user
