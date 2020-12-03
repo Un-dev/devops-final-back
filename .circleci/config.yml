@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker: 
-      - image: python:3.8-alpine
+      - image: python:3.8-buster
     working_directory: ~/back
     steps: 
       - checkout
