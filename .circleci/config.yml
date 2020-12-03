@@ -14,6 +14,7 @@ jobs:
             export CONDUIT_SECRET='something-secret'
             export FLASK_APP=./autoapp.py
             export FLASK_DEBUG=1
+            /usr/local/bin/python -m pip install --upgrade pip
             pip install -r requirements/dev.txt --user
       - save_cache:
           key: deps9-{{ checksum "Pipfile.lock" }}
