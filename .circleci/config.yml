@@ -20,7 +20,7 @@ jobs:
             /usr/local/bin/python -m pip install --upgrade pip
             apk update && apk add postgresql-dev gcc python3-dev musl-dev
             pip install -r requirements/dev.txt --user
-            pip install Flask
+            pip install flask
       - save_cache:
           key: deps9-{{ checksum "Pipfile.lock" }}
           paths:
