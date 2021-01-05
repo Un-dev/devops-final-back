@@ -35,7 +35,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: deps9-{{ checksum "Pipfile.lock" }}
+          key: deps-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
       - run: 
           name: postgres
           command : dockerize -wait tcp://localhost:5432 -timeout 1m
