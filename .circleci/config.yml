@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 jobs:
   build:
     docker: 
@@ -7,7 +7,7 @@ jobs:
     steps: 
       - checkout
       - restore_cache:
-          key: deps12-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
+          key: deps9-{{ checksum "Pipfile.lock" }}
       - run: 
           name: set env vars
           command: | 
@@ -17,40 +17,36 @@ jobs:
       - run : 
           name: install deps
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements/dev.txt
+            /usr/local/bin/python -m pip install --upgrade pip
+            apk update && apk add postgresql-dev gcc python3-dev musl-dev
+            pip install -r requirements/dev.txt --user
       - save_cache:
-          key: deps12-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
+          key: deps9-{{ checksum "Pipfile.lock" }}
           paths:
-            - "venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.8/site-packages"
   test:
     docker: 
       - image: python:3.8-buster
+      - image: circleci/postgres:9.6.2-alpine
         environment:
-          DATABASE_URL: postgresql://myUsr:somePwd@localhost:5432/psdb
-          FLASK_APP: autoapp.py
-          CONDUIT_SECRET: 'something-really-secret'
-          FLASK_DEBUG: 1
-          POSTGRES_USER: $POSTGRES_USER
+          POSTGRES_USER: myUsr
           POSTGRES_DB: psdb
-          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+          POSTGRES_PASSWORD: somePwd
+          DATABASE_URL: postgresql://myUsr:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_USER
     steps:
       - checkout
       - restore_cache:
-          key: deps12-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
-      - run: 
-          name: postgres
-          command : dockerize -wait tcp://localhost:5432 -timeout 1m
+          key: deps9-{{ checksum "Pipfile.lock" }}
       - run:
-          name : testing
+          name : test
           command: |
-            . venv/bin/activate
             flask db upgrade
             flask test
+            unset DATABASE_URL
 
 workflows:
-  version: 2.1
+  version: 2
   build-test:
     jobs:
       - build 
