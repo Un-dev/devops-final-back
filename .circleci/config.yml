@@ -7,7 +7,7 @@ jobs:
     steps: 
       - checkout
       - restore_cache:
-          key: deps-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
+          key: deps12-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
       - run: 
           name: set env vars
           command: | 
@@ -21,14 +21,14 @@ jobs:
             . venv/bin/activate
             pip install -r requirements/dev.txt
       - save_cache:
-          key: deps-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
+          key: deps12-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
           paths:
             - "venv"
   test:
     docker: 
       - image: python:3.8-buster
         environment:
-          DATABASE_URL: postgresql://myUsr:somePwd@localhost:5433/psdb
+          DATABASE_URL: postgresql://myUsr:somePwd@localhost:5432/psdb
       - image: circleci/postgres:9.6.2-alpine
         environment:
           POSTGRES_USER: $POSTGRES_USER
@@ -37,10 +37,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: deps-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
+          key: deps12-{{ checksum "requirements/dev.txt"}}-{{ .Environment.CACHE_VERSION }}
       - run: 
           name: postgres
-          command : dockerize -wait tcp://localhost:5433 -timeout 1m
+          command : dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name : testing
           command: |
