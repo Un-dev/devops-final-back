@@ -1,50 +1,22 @@
 version: 2
 jobs:
   build:
-    docker: 
-      - image: python:3.8-buster
-    working_directory: ~/back
-    steps: 
-      - checkout
-      - restore_cache:
-          key: deps9-{{ checksum "Pipfile.lock" }}
-      - run: 
-          name: set env vars
-          command: | 
-            export CONDUIT_SECRET='something-secret'
-            export FLASK_APP=./autoapp.py
-            export FLASK_DEBUG=1
-      - run : 
-          name: install deps
-          command: |
-            /usr/local/bin/python -m pip install --upgrade pip
-            apk update && apk add postgresql-dev gcc python3-dev musl-dev
-            pip install -r requirements/dev.txt --user
-      - save_cache:
-          key: deps9-{{ checksum "Pipfile.lock" }}
-          paths:
-            - "/usr/local/bin"
-            - "/usr/local/lib/python3.8/site-packages"
-  test:
-    docker: 
-      - image: python:3.8-buster
-      - image: circleci/postgres:9.6.2-alpine
-        environment:
-          POSTGRES_USER: myUsr
-          POSTGRES_DB: psdb
-          POSTGRES_PASSWORD: somePwd
-          DATABASE_URL: postgresql://myUsr:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_USER
+    docker:
+      - image: circleci/python:3.7.9-stretch-browsers
     steps:
       - checkout
       - restore_cache:
-          key: deps9-{{ checksum "Pipfile.lock" }}
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
       - run:
-          name : test
+          name: Install dependencies in a python venv
           command: |
-            pip install flask
-            flask db upgrade
-            flask test
-            unset DATABASE_URL
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+          paths: 
+            - "venv"
 
 workflows:
   version: 2
