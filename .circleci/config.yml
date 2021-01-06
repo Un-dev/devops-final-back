@@ -37,7 +37,7 @@ jobs:
           key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
       - run:
           name: Wait for postgres
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+          command: dockerize -wait tcp://postgres:5432 -timeout 1m
       - run: 
           name: running test
           command: |
