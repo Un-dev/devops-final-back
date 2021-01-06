@@ -26,7 +26,6 @@ jobs:
           FLASK_DEBUG: 1
           DATABASE_URL: postgresql://myUsr:somePwd@localhost:5432/psdb
       - image: circleci/postgres:9.6.5-alpine
-        name: postgres
         environment:
           POSTGRES_USER: myUsr
           POSTGRES_DB: psdb
@@ -37,7 +36,7 @@ jobs:
           key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
       - run:
           name: Wait for postgres
-          command: dockerize -wait tcp://postgres:5432 -timeout 1m
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: 
           name: running test
           command: |
