@@ -26,6 +26,7 @@ jobs:
           FLASK_DEBUG: 1
           DATABASE_URL: postgresql://myUsr:somePwd@localhost:5432/psdb
       - image: circleci/postgres:9.6.5-alpine
+        name: postgresql
         environment:
           POSTGRES_USER: myUsr
           POSTGRES_DB: psdb
