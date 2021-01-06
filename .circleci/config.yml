@@ -17,6 +17,26 @@ jobs:
           key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
           paths: 
             - "venv"
+  test:
+    docker:
+      - image: circleci/python:3.7.9-stretch-browsers
+        environment:
+          DATABASE_URL: postgresql://myUsr:somePwd@localhost:5432/psdb
+      - image: circleci/postgres:9.6.5-alpine
+        environment:
+          POSTGRES_USER: myUsr
+          POSTGRES_DB: psdb
+          POSTGRES_PASSWORD: somePwd
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+      - run: 
+          name: running test
+          command: |
+            . venv/bin/activate
+            flask db upgrade
+            flask test
 
 workflows:
   version: 2
