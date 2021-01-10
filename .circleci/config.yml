@@ -75,7 +75,15 @@ jobs:
             docker tag $IMAGE_NAME:app $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$CIRCLE_BUILD_NUM
             docker push $IMAGE_NAME:latest
-
+  deploy_heroku:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run: 
+          name: Heroku deploy
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
 
 
 workflows:
@@ -103,3 +111,14 @@ workflows:
             branches:
               only:
                 - main
+      - deploy_heroku:
+          requires:
+            # - test
+            - build
+          context:
+            - back_final
+          filters:
+            branches:
+              only:
+                - main
+
