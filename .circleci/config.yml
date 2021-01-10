@@ -54,9 +54,9 @@ jobs:
       - run: docker image build --tag $IMAGE_NAME:app .
       - run: docker save -o image.tar $IMAGE_NAME
       - persist_to_workspace:
-        root: .
-        paths:
-          - ./image.tar
+          root: .
+          paths:
+            - ./image.tar
 
 workflows:
   version: 2
