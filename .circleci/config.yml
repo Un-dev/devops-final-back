@@ -45,7 +45,7 @@ jobs:
             flask test
   build_docker:
     environment:
-      IMAGE_NAME: sgttabouret/my-awesome-ci-expr
+      IMAGE_NAME: sgttabouret/devops-final-back
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
