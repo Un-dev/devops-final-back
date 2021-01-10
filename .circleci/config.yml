@@ -63,8 +63,6 @@ jobs:
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
-      - attach_workspace:
-        at: /tmp/workspace
       - setup_remote_docker
 
 
@@ -86,10 +84,10 @@ workflows:
           context:
             - back_final
       - push_docker:
-          context:
-            - back_final
           requires:
             - build_docker
+          context:
+            - back_final
           filters:
             branches:
               only:
