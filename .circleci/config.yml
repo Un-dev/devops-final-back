@@ -57,6 +57,17 @@ jobs:
           root: .
           paths:
             - ./image.tar
+  - push_docker:
+    environment:
+      IMAGE_NAME: sgttabouret/devops-final-back
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+
+
 
 workflows:
   version: 2
@@ -74,3 +85,12 @@ workflows:
             - build
           context:
             - back_final
+      - push_docker:
+          context:
+            - back_final
+          requires:
+            - build_docker
+          filters:
+            branches:
+              only:
+                - main
