@@ -44,10 +44,12 @@ jobs:
             flask db upgrade
             flask test
   build_docker:
-      environment:
-        IMAGE_NAME: sgttabouret/my-awesome-ci-expr
-      docker:
-        - image: circleci/buildpack-deps:stretch
+    environment:
+      IMAGE_NAME: sgttabouret/my-awesome-ci-expr
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
 
 workflows:
   version: 2
