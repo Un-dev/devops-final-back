@@ -27,6 +27,8 @@ class Config(object):
         'http://localhost:4000',
         'https://devops-final-back.herokuapp.com/api/articles',
         'https://devops-final-back.herokuapp.com',
+        'http://0.0.0.0:5432',
+        'http://localhost:5432',
     ]
     JWT_HEADER_TYPE = 'Token'
 
