@@ -43,11 +43,11 @@ jobs:
             . venv/bin/activate
             flask db upgrade
             flask test
-    build_docker:
-        environment:
-            IMAGE_NAME: sgttabouret/my-awesome-ci-expr
-        docker:
-            - image: circleci/buildpack-deps:stretch
+  build_docker:
+      environment:
+        IMAGE_NAME: sgttabouret/my-awesome-ci-expr
+      docker:
+        - image: circleci/buildpack-deps:stretch
 
 workflows:
   version: 2
