@@ -29,6 +29,8 @@ class Config(object):
         'https://devops-final-back.herokuapp.com',
         'http://0.0.0.0:5432',
         'http://localhost:5432',
+        'http://0.0.0.0:' + os.environ.get('PORT', '8080'),
+        'https://0.0.0.0:' + os.environ.get('PORT', '8080'),
     ]
     JWT_HEADER_TYPE = 'Token'
 
