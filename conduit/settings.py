@@ -31,6 +31,8 @@ class Config(object):
         'http://localhost:5432',
         'http://0.0.0.0:' + os.environ.get('PORT', '8080'),
         'https://0.0.0.0:' + os.environ.get('PORT', '8080'),
+        'https://devops-final-dront-undev.netlify.app',
+        'http://devops-final-dront-undev.netlify.app',
     ]
     JWT_HEADER_TYPE = 'Token'
 
